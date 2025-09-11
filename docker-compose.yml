@@ -1,0 +1,38 @@
+services:
+  db:
+    image: postgres
+    restart: always
+    shm_size: 128mb
+    environment:
+      POSTGRES_USER: carclinic
+      POSTGRES_PASSWORD: carclinic
+    ports:
+      - "5432:5432"
+    volumes:
+      - carclinic-data:/var/lib/postgresql/data
+
+  backend:
+    build:
+      context: ./carclinic-api
+    container_name: carclinic-api
+    restart: always
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/carclinic
+      SPRING_DATASOURCE_USERNAME: carclinic
+      SPRING_DATASOURCE_PASSWORD: carclinic
+    depends_on:
+      - db
+  frontend:
+    build:
+      context: ./carclinic-ui
+    container_name: carclinic-ui
+    restart: always
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+volumes:
+  carclinic-data:
+    driver: local
