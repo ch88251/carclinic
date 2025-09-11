@@ -42,7 +42,7 @@ The backend of the Car Clinic application provides a RESTful API for managing cu
 
 The following API endpoints are available in the Car Clinic application:
 |===
-| Endpoint | Method | Description
+| **Endpoint** | **Method** | **Description**
 | /api/customers | POST | Create a new customer
 | /api/customers/{id} | GET | Retrieve a customer by ID
 | /api/customers/{id} | PUT | Update a customer by ID
