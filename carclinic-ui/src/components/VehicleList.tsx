@@ -2,16 +2,23 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { DataGrid, type GridColDef } from '@mui/x-data-grid';
 import Paper from '@mui/material/Paper';
-import IconButton from '@mui/material/IconButton';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Snackbar from '@mui/material/Snackbar';
+import AddVehicle from './AddVehicle';
+import Dialog from '@mui/material/Dialog';
+import IconButton from '@mui/material/IconButton';
 
-import { getVehicles, deleteVehicle } from '../api/vehicleapi';
+import { getVehicles, deleteVehicle, addVehicle } from '../api/vehicleapi';
 import { useState } from 'react';
+import Stack from '@mui/material/Stack';
+import Box from '@mui/material/Box';
+import { Button } from '@mui/material';
 
 function VehicleList() {
+
   const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [addDialogOpen, setAddDialogOpen] = useState(false);
 
   const queryClient = useQueryClient();
   const { data, isError, isLoading, isSuccess } = useQuery({
@@ -29,6 +36,21 @@ function VehicleList() {
       console.error(err);
     },
   });
+
+  const { mutate: addMutate } = useMutation({
+    mutationFn: addVehicle,
+    onSuccess: () => {
+      setAddDialogOpen(false);
+      queryClient.invalidateQueries({ queryKey: ['vehicles'] });
+    },
+    onError: (err) => {
+      console.error(err);
+    },
+  });
+
+  const handleAddVehicle = (vehicle: any) => {
+    addMutate(vehicle);
+  };
 
   const columns: GridColDef[] = [
     {
@@ -78,7 +100,7 @@ function VehicleList() {
       headerName: 'Next Service Date',
       width: 150,
       editable: true,
-    },  
+    },
     {
       field: 'actions',
       headerName: 'Actions',
@@ -119,38 +141,48 @@ function VehicleList() {
 
   const paginationModel = { page: 0, pageSize: 5 };
 
-  if (isLoading) {
-    return <span>Loading...</span>
-  } else if (isError) {
-    return <span>Error loading data</span>
-  } else if (isSuccess) {
-    return (
-      <Paper sx={{ height: 400, width: '100%' }}>
-        <DataGrid
-          rows={data}
-          columns={columns}
-          disableRowSelectionOnClick
-          initialState={{ pagination: { paginationModel } }}
-          pageSizeOptions={[5, 10]}
-          getRowId={row => row._links.self.href}
-          sx={{
-            '& .MuiDataGrid-cell:focus, & .MuiDataGrid-cell:focus-within': {
-            outline: 'none',
-            },
-            '& .MuiDataGrid-cell--editing': {
-            outline: 'none',
-            },
-          }}
-        />
-        <Snackbar
-          open={snackbarOpen}
-          autoHideDuration={3000}
-          onClose={() => setSnackbarOpen(false)}
-          message="Vehicle deleted"
-        />
-      </Paper>
-    );
-  }
+  return (
+    <Stack spacing={2}>
+      <Box display="flex" justifyContent="flex-end" alignItems="center">
+        <Button variant="contained" color="success" sx={{ width: 200 }} onClick={() => setAddDialogOpen(true)}>
+          Add Vehicle
+        </Button>
+      </Box>
+      <Dialog open={addDialogOpen} onClose={() => setAddDialogOpen(false)}>
+        <AddVehicle onAdd={handleAddVehicle} />
+      </Dialog>
+      {isLoading ? (
+        <span>Loading...</span>
+      ) : isError ? (
+        <span>Error loading data</span>
+      ) : isSuccess ? (
+        <Paper sx={{ height: 400, width: '100%' }}>
+          <DataGrid
+            rows={data}
+            columns={columns}
+            disableRowSelectionOnClick
+            initialState={{ pagination: { paginationModel } }}
+            pageSizeOptions={[5, 10]}
+            getRowId={row => row._links.self.href}
+            sx={{
+              '& .MuiDataGrid-cell:focus, & .MuiDataGrid-cell:focus-within': {
+                outline: 'none',
+              },
+              '& .MuiDataGrid-cell--editing': {
+                outline: 'none',
+              },
+            }}
+          />
+          <Snackbar
+            open={snackbarOpen}
+            autoHideDuration={3000}
+            onClose={() => setSnackbarOpen(false)}
+            message="Vehicle deleted"
+          />
+        </Paper>
+      ) : null}
+    </Stack>
+  );
 }
 
 export default VehicleList;
