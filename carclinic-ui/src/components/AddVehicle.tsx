@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import type { Vehicle } from '../types';
-import { Box, TextField, Typography } from '@mui/material';
+import { Box, Button, TextField, Typography } from '@mui/material';
 
 interface AddVehicleProps {
   onAdd: (vehicle: Vehicle) => void;
@@ -38,10 +38,10 @@ const AddVehicle: React.FC<AddVehicleProps> = ({ onAdd }) => {
 
   return (
     <Box component="form" onSubmit={handleSubmit} sx={{ display: 'flex', flexDirection: 'column', gap: 2, mb: 4 }}>
-      <Typography variant="h5" gutterBottom>
+      <Typography padding={4} variant="h3" gutterBottom>
         Add New Vehicle
       </Typography>
-      <div>
+      <Box padding={4}>
         <TextField
           label="VIN"
           name="vin"
@@ -121,9 +121,11 @@ const AddVehicle: React.FC<AddVehicleProps> = ({ onAdd }) => {
           margin="normal"
         />
         <Box mt={2}>
-          <button type="submit">Add Vehicle</button>
+          <Button type="submit" variant="contained" color="success">
+            Add Vehicle
+          </Button>
         </Box>
-      </div>
+      </Box>
     </Box>
   );
 };
