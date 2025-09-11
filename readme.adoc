@@ -1,0 +1,37 @@
+= Car Clinic Application
+
+The Car Clinic application is a software application used by Car Clinic staff and customers to schedule maintenance services for vehicles. The Car Clinic staff use the application to manage appointments and services, order parts from suppliers and update the status of vehicles, while customers use the application to schedule appointments, view service history, and receive notifications about their vehicles.
+
+== System Design
+
+=== System Context Diagram
+
+The System Context diagram for the Car Clinic application shows the relationships between the Car Clinic application and external systems, such as the Notification System.
+
+image::design/context-diagram.png[]
+
+=== Container Diagram
+
+The Container diagram for the Car Clinic application shows the high-level architecture of the application, including the web application, API, database, and notification service.
+
+image::design/container-diagram.png[]
+
+=== Component Diagram
+
+The Component diagram for the Car Clinic application shows the components of the web application, API, database, and notification service, including the controllers, services, and repositories used to manage the data and business logic of the application.
+
+image::design/component-diagram.png[]
+
+=== Entity Relationship Diagram
+
+The Entity Relationship Diagram for the Car Clinic application shows the relationships between the entities in the database, such as Customer, Vehicle, Staff, ServiceAppointment, ServiceType, ServiceDetails, and Notification.
+
+image::design/er-diagram.png[]
+
+== Backend Development
+
+=== Running the Database
+
+```
+docker run -d --name cardatabase -p 3306:3306 --env MARIADB_USER=cardatabase --env MARIADB_PASSWORD=${MARIADB_PASSWORD} --env MARIADB_DATABASE=cardatabase --env MARIADB_ROOT_PASSWORD=${MARIADB_ROOT_PW} mariadb:latest
+```
