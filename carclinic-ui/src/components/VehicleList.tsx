@@ -121,6 +121,7 @@ function VehicleList() {
             <EditIcon />
           </IconButton>
           <IconButton
+            data-testid="delete-vehicle-button"
             aria-label="delete"
             size="small"
             sx={{ color: '#d32f2f' }}
@@ -139,12 +140,12 @@ function VehicleList() {
     },
   ];
 
-  const paginationModel = { page: 0, pageSize: 5 };
+  const paginationModel = { page: 0, pageSize: 10 };
 
   return (
     <Stack spacing={2}>
       <Box display="flex" justifyContent="flex-end" alignItems="center">
-        <Button variant="contained" color="success" sx={{ width: 200 }} onClick={() => setAddDialogOpen(true)}>
+        <Button data-testid="add-vehicle-button" variant="contained" color="success" sx={{ width: 200 }} onClick={() => setAddDialogOpen(true)}>
           Add Vehicle
         </Button>
       </Box>
@@ -156,13 +157,13 @@ function VehicleList() {
       ) : isError ? (
         <span>Error loading data</span>
       ) : isSuccess ? (
-        <Paper sx={{ height: 400, width: '100%' }}>
+        <Paper sx={{ height: 600, width: '100%' }}>
           <DataGrid
             rows={data}
             columns={columns}
             disableRowSelectionOnClick
             initialState={{ pagination: { paginationModel } }}
-            pageSizeOptions={[5, 10]}
+            pageSizeOptions={[10, 10]}
             getRowId={row => row._links.self.href}
             sx={{
               '& .MuiDataGrid-cell:focus, & .MuiDataGrid-cell:focus-within': {
@@ -174,6 +175,7 @@ function VehicleList() {
             }}
           />
           <Snackbar
+            data-testid="snackbar-vehicle-deleted"
             open={snackbarOpen}
             autoHideDuration={3000}
             onClose={() => setSnackbarOpen(false)}

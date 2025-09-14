@@ -37,12 +37,13 @@ const AddVehicle: React.FC<AddVehicleProps> = ({ onAdd }) => {
   };
 
   return (
-    <Box component="form" onSubmit={handleSubmit} sx={{ display: 'flex', flexDirection: 'column', gap: 2, mb: 4 }}>
+    <Box data-testid="vehicle-form" component="form" onSubmit={handleSubmit} sx={{ display: 'flex', flexDirection: 'column', gap: 2, mb: 4 }}>
       <Typography padding={4} variant="h3" gutterBottom>
         Add New Vehicle
       </Typography>
       <Box padding={4}>
         <TextField
+          data-testid="txt-vin"
           label="VIN"
           name="vin"
           value={vehicle.vin}
@@ -52,6 +53,7 @@ const AddVehicle: React.FC<AddVehicleProps> = ({ onAdd }) => {
           margin="normal"
         />
         <TextField
+          data-testid="make"
           label="Make"
           name="make"
           value={vehicle.make}
@@ -61,6 +63,7 @@ const AddVehicle: React.FC<AddVehicleProps> = ({ onAdd }) => {
           margin="normal"
         />
         <TextField
+          data-testid="model"
           label="Model"
           name="model"
           value={vehicle.model}
@@ -70,6 +73,7 @@ const AddVehicle: React.FC<AddVehicleProps> = ({ onAdd }) => {
           margin="normal"
         />
         <TextField
+          data-testid="color"
           label="Color"
           name="color"
           value={vehicle.color}
@@ -79,6 +83,7 @@ const AddVehicle: React.FC<AddVehicleProps> = ({ onAdd }) => {
           margin="normal"
         />
         <TextField
+          data-testid="year"
           label="Year"
           name="year"
           type="number"
@@ -89,6 +94,7 @@ const AddVehicle: React.FC<AddVehicleProps> = ({ onAdd }) => {
           margin="normal"
         />
         <TextField
+          data-testid="mileage"
           label="Mileage"
           name="mileage"
           type="number"
@@ -99,6 +105,7 @@ const AddVehicle: React.FC<AddVehicleProps> = ({ onAdd }) => {
           margin="normal"
         />
         <TextField
+          data-testid="lastServiceDate"
           label="Last Service Date"
           name="lastServiceDate"
           type="date"
@@ -110,6 +117,7 @@ const AddVehicle: React.FC<AddVehicleProps> = ({ onAdd }) => {
           margin="normal"
         />
         <TextField
+          data-testid="nextServiceDate"
           label="Next Service Date"
           name="nextServiceDate"
           type="date"
@@ -121,8 +129,8 @@ const AddVehicle: React.FC<AddVehicleProps> = ({ onAdd }) => {
           margin="normal"
         />
         <Box mt={2}>
-          <Button type="submit" variant="contained" color="success">
-            Add Vehicle
+          <Button data-testid="save-vehicle-button" type="submit" variant="contained" color="success">
+            Save Vehicle
           </Button>
         </Box>
       </Box>
