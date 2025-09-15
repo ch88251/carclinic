@@ -18,3 +18,14 @@ create table "vehicles"
 
 alter table "vehicles"
     add constraint "vehicles_pk" primary key ("vin");
+
+create table "customers"
+(
+    "id"          bigint      not null,
+    "first_name"  varchar(128) not null,
+    "last_name"   varchar(128) not null,
+    "email"       varchar(256) not null,
+    "phone_number" varchar(32)  not null
+);
+alter table "customers"
+    add constraint "customers_pk" primary key ("id");
