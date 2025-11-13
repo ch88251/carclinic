@@ -9,17 +9,13 @@ create table "vehicles"
     "year"               integer     not null,
     "mileage"            integer     not null,
     "last_service_date"  date        not null,
-    "next_service_date"  date        not null,
-    "owner_first_name"   varchar(128) not null,
-    "owner_last_name"    varchar(128) not null,
-    "owner_email"        varchar(256) not null,
-    "owner_phone_number" varchar(32) not null
+    "next_service_date"  date        not null
 );
 
 alter table "vehicles"
     add constraint "vehicles_pk" primary key ("vin");
 
-create table "customers"
+create table "owners"
 (
     "id"          bigint      not null,
     "first_name"  varchar(128) not null,
@@ -27,5 +23,5 @@ create table "customers"
     "email"       varchar(256) not null,
     "phone_number" varchar(32)  not null
 );
-alter table "customers"
-    add constraint "customers_pk" primary key ("id");
+alter table "owners"
+    add constraint "owners_pk" primary key ("id");

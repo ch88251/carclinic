@@ -1,7 +1,7 @@
 @startuml
 
-entity "Customer" {
-    *customer_id : INT
+entity "Owner" {
+    *owner_id : INT
     --
     name : VARCHAR
     phone_number : VARCHAR
@@ -65,12 +65,12 @@ entity "Notification" {
     status : VARCHAR
 }
 
-Customer ||--o{ Vehicle : "owns"
-Customer ||--o{ ServiceAppointment : "books"
+Owner ||--o{ Vehicle : "owns"
+Owner ||--o{ ServiceAppointment : "books"
 Vehicle ||--o{ ServiceAppointment : "is scheduled for"
 Staff ||--o{ ServiceAppointment : "handles"
 ServiceAppointment ||--o{ ServiceDetails : "includes"
 ServiceType ||--o{ ServiceDetails : "describes"
-Customer ||--o{ Notification : "receives"
+Owner ||--o{ Notification : "receives"
 
 @enduml
