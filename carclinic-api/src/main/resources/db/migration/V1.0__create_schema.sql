@@ -25,3 +25,14 @@ create table "owners"
 );
 alter table "owners"
     add constraint "owners_pk" primary key ("id");
+
+create table "staff"
+(
+    "id"          bigint      not null,
+    "first_name"  varchar(128) not null,
+    "last_name"   varchar(128) not null,
+    "email"       varchar(256) not null,
+    "phone_number" varchar(32)  not null
+);
+alter table "staff"
+    add constraint "staff_pk" primary key ("id");
