@@ -81,5 +81,5 @@ The frontend of the Car Clinic application is built using modern web technologie
 - React
 - Tanstack Query
 - Axios
-- Tailwind CSS
+- MaterialUI
 
