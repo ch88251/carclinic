@@ -10,6 +10,28 @@
 // Define custom command type for TypeScript
 /// <reference types="cypress" />
 
+interface VehicleResponse {
+  vin: string;
+  make: string;
+  model: string;
+  color: string;
+  year: number;
+  mileage: number;
+  lastServiceDate: string;
+  nextServiceDate: string;
+  _links: {
+    self: { href: string };
+    vehicle: { href: string };
+    owner: { href: string };
+  };
+}
+
+interface VehiclesApiResponse {
+  _embedded: {
+    vehicles: VehicleResponse[];
+  };
+}
+
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace Cypress {
@@ -18,7 +40,7 @@ declare global {
        * Custom command to get vehicle data from API
        * @example cy.getVehicles()
        */
-      getVehicles(): Chainable<Response<unknown>>;
+      getVehicles(): Chainable<Response<VehiclesApiResponse>>;
     }
   }
 }

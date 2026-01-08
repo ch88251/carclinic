@@ -1,5 +1,5 @@
 import { defineConfig } from 'cypress';
-import cypressGrep from '@cypress/grep/src/plugin';
+import cypressGrep from '@cypress/grep/plugin';
 
 export default defineConfig({
   e2e: {
