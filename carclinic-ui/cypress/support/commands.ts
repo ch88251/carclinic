@@ -8,14 +8,17 @@
 // ***********************************************
 
 // Define custom command type for TypeScript
+/// <reference types="cypress" />
+
 declare global {
+  // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace Cypress {
     interface Chainable {
       /**
        * Custom command to get vehicle data from API
        * @example cy.getVehicles()
        */
-      getVehicles(): Chainable<any>;
+      getVehicles(): Chainable<Response<unknown>>;
     }
   }
 }

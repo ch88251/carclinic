@@ -1,2 +1,10 @@
 /// <reference types="cypress" />
-/// <reference types="@cypress/grep" />
+
+declare namespace Cypress {
+  interface TestConfigOverrides {
+    /**
+     * Test tags for filtering with @cypress/grep
+     */
+    tags?: string | string[];
+  }
+}
