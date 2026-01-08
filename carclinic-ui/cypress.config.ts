@@ -1,5 +1,5 @@
 import { defineConfig } from 'cypress';
-import cypressGrep from '@cypress/grep/plugin';
+import { plugin as registerCypressGrep } from '@cypress/grep/plugin';
 
 export default defineConfig({
   e2e: {
@@ -8,7 +8,7 @@ export default defineConfig({
     supportFile: 'cypress/support/e2e.ts',
     setupNodeEvents(on, config) {
       // implement node event listeners here
-      cypressGrep(config);
+      registerCypressGrep(config);
       return config;
     },
   },
