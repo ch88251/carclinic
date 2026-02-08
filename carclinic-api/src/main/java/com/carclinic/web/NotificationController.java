@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.carclinic.domain.Notification;
 import com.carclinic.domain.NotificationRepository;
 
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
+import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
 @RequestMapping("/notifications")
