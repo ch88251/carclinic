@@ -1,11 +1,8 @@
 package com.carclinic.domain;
 
-import jakarta.persistence.Inheritance;
-import jakarta.persistence.InheritanceType;
 import jakarta.persistence.MappedSuperclass;
 
 @MappedSuperclass
-@Inheritance(strategy = InheritanceType.JOINED)
 public class Person extends AbstractEntity {
 
     private String firstName;
