@@ -20,4 +20,8 @@ public abstract class AbstractEntity {
 
     @Column(name = "date_modified", nullable = false)
     private Instant dateModified = Instant.now();
+
+    public Long getId() {
+        return id;
+    }
 }
