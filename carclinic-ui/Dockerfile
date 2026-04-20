@@ -19,8 +19,8 @@ RUN rm -rf ./*
 # Copy built assets from previous stage
 COPY --from=build /app/dist .
 
-# Copy custom nginx config if needed
-# COPY nginx.conf /etc/nginx/nginx.conf
+# Copy custom nginx config
+COPY nginx.conf /etc/nginx/conf.d/default.conf
 
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
