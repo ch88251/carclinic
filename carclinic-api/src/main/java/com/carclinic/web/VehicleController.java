@@ -6,11 +6,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.carclinic.domain.Vehicle;
 import com.carclinic.domain.VehicleRepository;
 
 @RestController
+@RequestMapping("/api/vehicles")
 public class VehicleController {
 	
 	private final VehicleRepository repository;
@@ -19,18 +21,18 @@ public class VehicleController {
 		this.repository = repository;
 	}
 
-	@GetMapping(path = "/vehicles", produces = "application/json")
+	@GetMapping(produces = "application/json")
 	public Iterable<Vehicle> getVehicles() {
 		return repository.findAll();
 	}
 
-	@DeleteMapping(path = "/vehicles/{id}")
+	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> deleteVehicle(@PathVariable Long id) {
 		repository.deleteById(id);
 		return ResponseEntity.noContent().build();
 	}
 
-	@PostMapping(path = "/vehicles", consumes = "application/json", produces = "application/json")
+	@PostMapping(consumes = "application/json", produces = "application/json")
 	public ResponseEntity<Vehicle> addVehicle(@RequestBody Vehicle vehicle) {
 		Vehicle savedVehicle = repository.save(vehicle);
 		return ResponseEntity.ok(savedVehicle);

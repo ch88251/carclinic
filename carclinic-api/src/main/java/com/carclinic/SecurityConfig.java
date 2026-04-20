@@ -40,6 +40,7 @@ public class SecurityConfig {
             SessionCreationPolicy.STATELESS))
 			.authorizeHttpRequests(
 					(authorizeHttpRequests) -> authorizeHttpRequests
+							.requestMatchers("/api-docs/**", "/swagger-ui/**", "/swagger-ui.html", "/v3/api-docs/**").permitAll()
 						.requestMatchers("/api/**").permitAll()
 						.anyRequest().authenticated());
       return http.build();

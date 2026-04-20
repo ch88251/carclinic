@@ -5,16 +5,15 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.carclinic.domain.ServiceType;
 import com.carclinic.domain.ServiceTypeRepository;
 
-import org.springframework.web.bind.annotation.RequestBody;
-
 @RestController
-@RequestMapping("/service-types")
+@RequestMapping("/api/service-types")
 public class ServiceTypeController {
 
     private final ServiceTypeRepository repository;
