@@ -55,7 +55,7 @@ class VehicleControllerTest {
         when(vehicleRepository.save(vehicle)).thenReturn(vehicle);
 
         ResponseEntity<Vehicle> response = vehicleController.addVehicle(vehicle);
-    assertEquals(200, response.getStatusCode().value());
+    assertEquals(201, response.getStatusCode().value());
         assertEquals(vehicle, response.getBody());
         verify(vehicleRepository).save(vehicle);
     }

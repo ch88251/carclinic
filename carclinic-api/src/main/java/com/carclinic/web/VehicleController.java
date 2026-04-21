@@ -1,6 +1,7 @@
 package com.carclinic.web;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.NonNull;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,9 +34,9 @@ public class VehicleController {
 	}
 
 	@PostMapping(consumes = "application/json", produces = "application/json")
-	public ResponseEntity<Vehicle> addVehicle(@RequestBody Vehicle vehicle) {
+	public ResponseEntity<Vehicle> addVehicle(@RequestBody @NonNull Vehicle vehicle) {
 		Vehicle savedVehicle = repository.save(vehicle);
-		return ResponseEntity.ok(savedVehicle);
+		return ResponseEntity.created(null).body(savedVehicle);
 	}
 	
 }
