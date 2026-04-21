@@ -1,6 +1,5 @@
 package com.carclinic.web;
 
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertIterableEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -24,6 +23,9 @@ public class StaffControllerTest {
     @Mock
     private StaffRepository staffRepository;
 
+    @Mock
+    private StaffMapper staffMapper;
+
     @InjectMocks
     private StaffController staffController;
 
@@ -37,10 +39,14 @@ public class StaffControllerTest {
         Staff s1 = new Staff();
         Staff s2 = new Staff();
         Iterable<Staff> staffList = List.of(s1, s2);
+        StaffDto dto1 = new StaffDto();
+        StaffDto dto2 = new StaffDto();
         when(staffRepository.findAll()).thenReturn(staffList);
-        Iterable<Staff> result = staffController.getStaff();
+        when(staffMapper.toStaffDto(s1)).thenReturn(dto1);
+        when(staffMapper.toStaffDto(s2)).thenReturn(dto2);
+        List<StaffDto> result = staffController.getStaff();
         assertNotNull(result);
-        assertIterableEquals(staffList, result);
+        assertIterableEquals(List.of(dto1, dto2), result);
         verify(staffRepository).findAll();
     }
 
@@ -54,11 +60,14 @@ public class StaffControllerTest {
 
     @Test
     void addStaff_savesAndReturnsStaff() {
+        StaffFieldsDto request = new StaffFieldsDto("John", "Doe", "john@example.com", "555-1234", "Mechanic");
         Staff staff = new Staff();
-        when(staffRepository.save(staff)).thenReturn(staff);
-        ResponseEntity<Staff> response = staffController.addStaff(staff);
-        assertEquals(200, response.getStatusCode().value());
-        assertEquals(staff, response.getBody());
+        StaffDto staffDto = new StaffDto();
+        when(staffMapper.toStaff(request)).thenReturn(staff);
+        when(staffMapper.toStaffDto(staff)).thenReturn(staffDto);
+        ResponseEntity<StaffDto> response = staffController.addStaff(request);
+        assertEquals(201, response.getStatusCode().value());
+        assertEquals(staffDto, response.getBody());
         verify(staffRepository).save(staff);
     }
 

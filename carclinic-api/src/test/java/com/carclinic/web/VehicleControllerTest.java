@@ -20,6 +20,9 @@ class VehicleControllerTest {
     @Mock
     private VehicleRepository vehicleRepository;
 
+    @Mock
+    private VehicleMapper vehicleMapper;
+
     @InjectMocks
     private VehicleController vehicleController;
 
@@ -33,11 +36,15 @@ class VehicleControllerTest {
         Vehicle v1 = new Vehicle();
         Vehicle v2 = new Vehicle();
         List<Vehicle> vehicles = Arrays.asList(v1, v2);
+        VehicleDto dto1 = new VehicleDto();
+        VehicleDto dto2 = new VehicleDto();
         when(vehicleRepository.findAll()).thenReturn(vehicles);
+        when(vehicleMapper.toVehicleDto(v1)).thenReturn(dto1);
+        when(vehicleMapper.toVehicleDto(v2)).thenReturn(dto2);
 
-        Iterable<Vehicle> result = vehicleController.getVehicles();
+        List<VehicleDto> result = vehicleController.getVehicles();
         assertNotNull(result);
-        assertIterableEquals(vehicles, result);
+        assertIterableEquals(List.of(dto1, dto2), result);
         verify(vehicleRepository).findAll();
     }
 
@@ -45,18 +52,22 @@ class VehicleControllerTest {
     void deleteVehicle_deletesById() {
         Long id = 1L;
         ResponseEntity<Void> response = vehicleController.deleteVehicle(id);
-    assertEquals(204, response.getStatusCode().value());
+        assertEquals(204, response.getStatusCode().value());
         verify(vehicleRepository).deleteById(id);
     }
 
     @Test
     void addVehicle_savesAndReturnsVehicle() {
+        VehicleFieldsDto request = new VehicleFieldsDto("VIN1", "Toyota", "Camry", "Blue", 2020, 5000,
+                "2024-01-01", "2025-01-01", 1L);
         Vehicle vehicle = new Vehicle();
-        when(vehicleRepository.save(vehicle)).thenReturn(vehicle);
+        VehicleDto vehicleDto = new VehicleDto();
+        when(vehicleMapper.toVehicle(request)).thenReturn(vehicle);
+        when(vehicleMapper.toVehicleDto(vehicle)).thenReturn(vehicleDto);
 
-        ResponseEntity<Vehicle> response = vehicleController.addVehicle(vehicle);
-    assertEquals(201, response.getStatusCode().value());
-        assertEquals(vehicle, response.getBody());
+        ResponseEntity<VehicleDto> response = vehicleController.addVehicle(request);
+        assertEquals(201, response.getStatusCode().value());
+        assertEquals(vehicleDto, response.getBody());
         verify(vehicleRepository).save(vehicle);
     }
 }
