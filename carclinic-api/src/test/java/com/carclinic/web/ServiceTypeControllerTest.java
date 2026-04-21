@@ -1,5 +1,6 @@
 package com.carclinic.web;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertIterableEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.verify;
@@ -12,6 +13,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.http.ResponseEntity;
 
 import com.carclinic.domain.ServiceType;
 import com.carclinic.domain.ServiceTypeRepository;
@@ -24,6 +26,9 @@ public class ServiceTypeControllerTest {
     @Mock
     private ServiceTypeRepository serviceTypeRepository;
 
+    @Mock
+    private ServiceTypeMapper serviceTypeMapper;
+
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
@@ -31,11 +36,17 @@ public class ServiceTypeControllerTest {
 
     @Test
     void getServiceTypes_returnsAllServiceTypes() {
-        List<ServiceType> serviceTypes = List.of(new ServiceType(), new ServiceType());
+        ServiceType st1 = new ServiceType();
+        ServiceType st2 = new ServiceType();
+        List<ServiceType> serviceTypes = List.of(st1, st2);
+        ServiceTypeDto dto1 = new ServiceTypeDto();
+        ServiceTypeDto dto2 = new ServiceTypeDto();
         when(serviceTypeRepository.findAll()).thenReturn(serviceTypes);
-        Iterable<ServiceType> result = serviceTypeController.getServiceTypes();
+        when(serviceTypeMapper.toServiceTypeDto(st1)).thenReturn(dto1);
+        when(serviceTypeMapper.toServiceTypeDto(st2)).thenReturn(dto2);
+        List<ServiceTypeDto> result = serviceTypeController.getServiceTypes();
         assertNotNull(result);
-        assertIterableEquals(serviceTypes, result);
+        assertIterableEquals(List.of(dto1, dto2), result);
         verify(serviceTypeRepository).findAll();
     }
 
@@ -48,9 +59,14 @@ public class ServiceTypeControllerTest {
 
     @Test
     void addServiceType_savesAndReturnsServiceType() {
+        ServiceTypeFieldsDto request = new ServiceTypeFieldsDto("Oil Change", "Standard oil change", 1);
         ServiceType serviceType = new ServiceType();
-        when(serviceTypeRepository.save(serviceType)).thenReturn(serviceType);
-        serviceTypeController.addServiceType(serviceType);
+        ServiceTypeDto serviceTypeDto = new ServiceTypeDto();
+        when(serviceTypeMapper.toServiceType(request)).thenReturn(serviceType);
+        when(serviceTypeMapper.toServiceTypeDto(serviceType)).thenReturn(serviceTypeDto);
+        ResponseEntity<ServiceTypeDto> response = serviceTypeController.addServiceType(request);
+        assertEquals(201, response.getStatusCode().value());
+        assertEquals(serviceTypeDto, response.getBody());
         verify(serviceTypeRepository).save(serviceType);
     }
 

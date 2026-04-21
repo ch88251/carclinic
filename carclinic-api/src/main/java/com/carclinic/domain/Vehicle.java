@@ -61,6 +61,10 @@ public class Vehicle {
     this.owner = owner; 
   }
 
+  public Long getId() {
+    return id;
+  }
+
   // Getters and Setters
   public String getVin() {
     return vin;
