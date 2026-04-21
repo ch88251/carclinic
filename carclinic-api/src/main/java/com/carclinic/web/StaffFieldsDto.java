@@ -1,5 +1,6 @@
 package com.carclinic.web;
 
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 
 public class StaffFieldsDto {
@@ -10,6 +11,7 @@ public class StaffFieldsDto {
     @NotBlank
     private String lastName;
 
+    @Email
     @NotBlank
     private String email;
 

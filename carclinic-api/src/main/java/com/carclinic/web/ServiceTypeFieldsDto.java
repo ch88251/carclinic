@@ -1,5 +1,6 @@
 package com.carclinic.web;
 
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 
 public class ServiceTypeFieldsDto {
@@ -9,6 +10,7 @@ public class ServiceTypeFieldsDto {
 
     private String description;
 
+    @Min(1)
     private int estimatedTimeHours;
 
     public ServiceTypeFieldsDto() {

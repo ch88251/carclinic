@@ -1,5 +1,7 @@
 package com.carclinic.web;
 
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
@@ -17,8 +19,11 @@ public class VehicleFieldsDto {
     @NotBlank
     private String color;
 
+    @Min(1886)
+    @Max(2200)
     private int year;
 
+    @Min(0)
     private int mileage;
 
     @NotBlank

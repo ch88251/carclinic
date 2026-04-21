@@ -2,7 +2,6 @@ package com.carclinic.web;
 
 import java.net.URI;
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -53,7 +52,7 @@ public class StaffController {
   public List<StaffDto> getStaff() {
     return StreamSupport.stream(repository.findAll().spliterator(), false)
         .map(staffMapper::toStaffDto)
-        .collect(Collectors.toList());
+        .toList();
   }
 
   @DeleteMapping("/{id}")

@@ -2,7 +2,6 @@ package com.carclinic.web;
 
 import java.net.URI;
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 import org.springframework.http.ResponseEntity;
@@ -37,7 +36,7 @@ public class VehicleController {
 	public List<VehicleDto> getVehicles() {
 		return StreamSupport.stream(repository.findAll().spliterator(), false)
 				.map(vehicleMapper::toVehicleDto)
-				.collect(Collectors.toList());
+				.toList();
 	}
 
 	@DeleteMapping("/{id}")

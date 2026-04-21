@@ -2,7 +2,6 @@ package com.carclinic.web;
 
 import java.net.URI;
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 import org.springframework.http.ResponseEntity;
@@ -38,7 +37,7 @@ public class ServiceTypeController {
     public List<ServiceTypeDto> getServiceTypes() {
         return StreamSupport.stream(repository.findAll().spliterator(), false)
                 .map(serviceTypeMapper::toServiceTypeDto)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     @DeleteMapping("/{id}")
