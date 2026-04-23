@@ -1,4 +1,5 @@
 export type VehicleResponse = {
+  id: number;
   vin: string;
   make: string;
   model: string;
@@ -7,17 +8,6 @@ export type VehicleResponse = {
   mileage: number;
   lastServiceDate: string;
   nextServiceDate: string;
-  _links: {
-    self: {
-      href: string;
-    },
-    vehicle: {
-      href: string;
-    },
-    owner: {
-      href: string;
-    }
-  };
 }
 
 export type Vehicle = {

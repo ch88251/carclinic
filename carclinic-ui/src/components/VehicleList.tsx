@@ -128,7 +128,7 @@ function VehicleList() {
             onClick={() => {
               const vehicleId = params.id;
               if (window.confirm('Are you sure you want to delete this vehicle?')) {
-                mutate(params.row._links.vehicle.href);
+                mutate(params.row.id);
               }
               console.log(`Delete vehicle with ID: ${vehicleId}`);
             }}
@@ -164,7 +164,7 @@ function VehicleList() {
             disableRowSelectionOnClick
             initialState={{ pagination: { paginationModel } }}
             pageSizeOptions={[10, 10]}
-            getRowId={row => row._links.self.href}
+            getRowId={row => row.id}
             sx={{
               '& .MuiDataGrid-cell:focus, & .MuiDataGrid-cell:focus-within': {
                 outline: 'none',

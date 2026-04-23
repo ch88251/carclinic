@@ -10,6 +10,11 @@ services:
       - "5432:5432"
     volumes:
       - carclinic-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U carclinic"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   backend:
     build:
@@ -23,7 +28,8 @@ services:
       SPRING_DATASOURCE_USERNAME: carclinic
       SPRING_DATASOURCE_PASSWORD: carclinic
     depends_on:
-      - db
+      db:
+        condition: service_healthy
   frontend:
     build:
       context: ./carclinic-ui

@@ -4,13 +4,11 @@ import axios from 'axios';
 export const getVehicles = async (): Promise<VehicleResponse[]> => {
   const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/vehicles`);
 
-  return response.data._embedded.vehicles;
+  return response.data;
 }
 
-export const deleteVehicle = async (link: string): Promise<VehicleResponse> => {
-  const response = await axios.delete(link);
-  
-  return response.data;
+export const deleteVehicle = async (id: number): Promise<void> => {
+  await axios.delete(`${import.meta.env.VITE_API_URL}/api/vehicles/${id}`);
 }
 
 export const addVehicle = async (vehicle: Vehicle): Promise<VehicleResponse> => {
