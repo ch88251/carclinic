@@ -113,9 +113,9 @@ function VehicleList() {
                       aria-label="delete"
                       onClick={() => {
                         if (window.confirm('Are you sure you want to delete this vehicle?')) {
+                          console.log(`Delete vehicle with ID: ${row.id}`);
                           mutate(row.id);
                         }
-                        console.log(`Delete vehicle with ID: ${row.id}`);
                       }}
                     >
                       🗑️
