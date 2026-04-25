@@ -11,17 +11,19 @@ describe('Vehicle API Tests', () => {
       // Verify response status
       expect(response.status).to.eq(200);
 
-      // Verify response has the expected structure
-      expect(response.body).to.have.property('_embedded');
-      expect(response.body._embedded).to.have.property('vehicles');
-      expect(response.body._embedded.vehicles).to.be.an('array');
+      // Verify response is an array of vehicles
+      expect(response.body).to.be.an('array');
+      if (response.body.length > 0) {
+        expect(response.body[0]).to.have.property('id');
+        expect(response.body[0]).to.have.property('vin');
+      }
     });
   });
 
   it('should use custom command to get vehicles', { tags: '@api' }, () => {
     cy.getVehicles().then((response) => {
       expect(response.status).to.eq(200);
-      expect(response.body).to.have.property('_embedded');
+      expect(response.body).to.be.an('array');
     });
   });
 
@@ -32,11 +34,11 @@ describe('Vehicle API Tests', () => {
       model: 'Model 3',
       year: 2023,
       vin: `5YJ3E1EA1KF${timestamp.toString().slice(-6)}`,
-      licensePlate: `TESLA${timestamp.toString().slice(-3)}`,
       color: 'White',
       mileage: 15000,
       lastServiceDate: '2024-12-01',
       nextServiceDate: '2025-06-01',
+      ownerId: 1,
     };
 
     cy.request({
@@ -51,19 +53,18 @@ describe('Vehicle API Tests', () => {
       expect(response.status).to.eq(201);
 
       // Verify response contains the created vehicle
+      expect(response.body).to.have.property('id');
       expect(response.body).to.have.property('make', newVehicle.make);
       expect(response.body).to.have.property('model', newVehicle.model);
       expect(response.body).to.have.property('year', newVehicle.year);
-      expect(response.body).to.have.property('_links');
-      expect(response.body._links).to.have.property('self');
 
-      // Store the vehicle URL for cleanup
-      const vehicleUrl = response.body._links.self.href;
+      // Store the vehicle ID for cleanup
+      const vehicleId = response.body.id;
 
       // Optional: Clean up by deleting the created vehicle
       cy.request({
         method: 'DELETE',
-        url: vehicleUrl,
+        url: `${apiUrl}/api/vehicles/${vehicleId}`,
       }).then((deleteResponse) => {
         expect(deleteResponse.status).to.be.oneOf([200, 204]);
       });
@@ -78,11 +79,11 @@ describe('Vehicle API Tests', () => {
       model: 'X5',
       year: 2022,
       vin: `WBAJA7C52KW${timestamp.toString().slice(-6)}`,
-      licensePlate: `BMW${timestamp.toString().slice(-3)}`,
       color: 'Black',
       mileage: 25000,
       lastServiceDate: '2024-11-15',
       nextServiceDate: '2025-05-15',
+      ownerId: 1,
     };
 
     cy.request({
@@ -95,7 +96,7 @@ describe('Vehicle API Tests', () => {
     }).then((createResponse) => {
       expect(createResponse.status).to.eq(201);
 
-      const vehicleUrl = createResponse.body._links.self.href;
+      const vehicleId = createResponse.body.id;
       const updatedVehicle = {
         ...vehicleToCreate,
         color: 'Blue', // Update the color
@@ -104,7 +105,7 @@ describe('Vehicle API Tests', () => {
       // Update the vehicle
       cy.request({
         method: 'PUT',
-        url: vehicleUrl,
+        url: `${apiUrl}/api/vehicles/${vehicleId}`,
         body: updatedVehicle,
         headers: {
           'Content-Type': 'application/json',
@@ -116,7 +117,7 @@ describe('Vehicle API Tests', () => {
         // Clean up
         cy.request({
           method: 'DELETE',
-          url: vehicleUrl,
+          url: `${apiUrl}/api/vehicles/${vehicleId}`,
         });
       });
     });
@@ -130,11 +131,11 @@ describe('Vehicle API Tests', () => {
       model: 'A4',
       year: 2021,
       vin: `WAUZZZ8K5DA${timestamp.toString().slice(-6)}`,
-      licensePlate: `AUDI${timestamp.toString().slice(-2)}`,
       color: 'Silver',
       mileage: 30000,
       lastServiceDate: '2024-10-20',
       nextServiceDate: '2025-04-20',
+      ownerId: 1,
     };
 
     cy.request({
@@ -147,12 +148,12 @@ describe('Vehicle API Tests', () => {
     }).then((createResponse) => {
       expect(createResponse.status).to.eq(201);
 
-      const vehicleUrl = createResponse.body._links.self.href;
+      const vehicleId = createResponse.body.id;
 
       // Delete the vehicle
       cy.request({
         method: 'DELETE',
-        url: vehicleUrl,
+        url: `${apiUrl}/api/vehicles/${vehicleId}`,
       }).then((deleteResponse) => {
         expect(deleteResponse.status).to.be.oneOf([200, 204]);
       });
@@ -170,3 +171,4 @@ describe('Vehicle API Tests', () => {
     });
   });
 });
+

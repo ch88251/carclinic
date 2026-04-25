@@ -19,7 +19,7 @@ export const addVehicle = async (vehicle) => {
 }
 
 export const updateVehicle = async (vehicleEntry) => {
-  const response = await axios.put(vehicleEntry.url, vehicleEntry.vehicle, {
+  const response = await axios.put(`${import.meta.env.VITE_API_URL}/api/vehicles/${vehicleEntry.id}`, vehicleEntry.vehicle, {
     headers: {
       'Content-Type': 'application/json'
     },

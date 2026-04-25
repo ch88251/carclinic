@@ -2,6 +2,7 @@ package com.carclinic.web;
 
 import java.net.URI;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.StreamSupport;
 
 import org.springframework.http.ResponseEntity;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -56,6 +58,23 @@ public class VehicleController {
 				.toUri();
 
 		return ResponseEntity.created(location).body(response);
+	}
+
+	@PutMapping(value = "/{id}", consumes = "application/json", produces = "application/json")
+	public ResponseEntity<VehicleDto> updateVehicle(@PathVariable Long id, @Valid @RequestBody VehicleFieldsDto request) {
+		Vehicle vehicle = repository.findById(id)
+				.orElseThrow(() -> new NoSuchElementException("Vehicle not found: " + id));
+		vehicle.setVin(request.getVin());
+		vehicle.setMake(request.getMake());
+		vehicle.setModel(request.getModel());
+		vehicle.setColor(request.getColor());
+		vehicle.setYear(request.getYear());
+		vehicle.setMileage(request.getMileage());
+		vehicle.setLastServiceDate(request.getLastServiceDate());
+		vehicle.setNextServiceDate(request.getNextServiceDate());
+		vehicle.setOwner(vehicleMapper.toVehicle(request).getOwner());
+		repository.save(vehicle);
+		return ResponseEntity.ok(vehicleMapper.toVehicleDto(vehicle));
 	}
 	
 }
