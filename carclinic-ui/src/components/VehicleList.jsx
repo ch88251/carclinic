@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 
-import { DataGrid, type GridColDef } from '@mui/x-data-grid';
+import { DataGrid } from '@mui/x-data-grid';
 import Paper from '@mui/material/Paper';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -48,11 +48,11 @@ function VehicleList() {
     },
   });
 
-  const handleAddVehicle = (vehicle: any) => {
+  const handleAddVehicle = (vehicle) => {
     addMutate(vehicle);
   };
 
-  const columns: GridColDef[] = [
+  const columns = [
     {
       field: 'vin',
       headerName: 'VIN',

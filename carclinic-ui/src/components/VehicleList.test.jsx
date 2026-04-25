@@ -7,7 +7,7 @@ const useQueryMock = vi.fn();
 
 // Mock the module and use the mock function
 vi.mock('@tanstack/react-query', () => ({
-  useQuery: (...args: any[]) => useQueryMock(...args),
+  useQuery: (...args) => useQueryMock(...args),
   useMutation: () => ({ mutate: vi.fn() }),
   useQueryClient: () => ({ invalidateQueries: vi.fn() }),
 }));

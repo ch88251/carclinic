@@ -1,12 +1,7 @@
-import React, { useState } from 'react';
-import type { Vehicle } from '../types';
+import { useState } from 'react';
 import { Box, Button, TextField, Typography } from '@mui/material';
 
-interface AddVehicleProps {
-  onAdd: (vehicle: Vehicle) => void;
-}
-
-const initialState: Vehicle = {
+const initialState = {
   vin: '',
   make: '',
   model: '',
@@ -17,22 +12,22 @@ const initialState: Vehicle = {
   nextServiceDate: '',
 };
 
-const AddVehicle: React.FC<AddVehicleProps> = ({ onAdd }) => {
+const AddVehicle = ({ onAdd }) => {
   const [vehicle, setVehicle] = useState(initialState);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e) => {
     const { name, value } = e.target;
     setVehicle((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleNumberChange = (e) => {
     const { name, value } = e.target;
     setVehicle((prev) => ({ ...prev, [name]: Number(value) }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    onAdd(vehicle as Vehicle);
+    onAdd(vehicle);
     setVehicle(initialState);
   };
 

@@ -3,7 +3,7 @@ import react from '@vitejs/plugin-react';
 
 export default defineConfig({
   test: {
-    include: ['**/*.test.tsx'],
+    include: ['**/*.test.jsx'],
     globals: true,   
     environment: "jsdom", 
     setupFiles: ["./src/setupTests.js"],
@@ -12,5 +12,6 @@ export default defineConfig({
         inline: ["@mui/x-data-grid"],
       },
     },
-  }
+  },
+  plugins: [react()],
 })

@@ -58,15 +58,5 @@ describe('Vehicle Management UI', () => {
 
     // Click the Add Vehicle button (adjust selector based on your UI)
     cy.contains('button', /add/i).should('be.visible').click();
-
-    // Note: The following selectors should be adjusted based on your actual UI
-    // This is a template showing how you would fill out a form
-    // cy.get('input[name="make"]').type('Ford');
-    // cy.get('input[name="model"]').type('F-150');
-    // cy.get('input[name="year"]').type('2021');
-    // cy.get('button[type="submit"]').click();
-
-    // cy.wait('@addVehicle');
-    // cy.contains('Ford').should('be.visible');
   });
 });
