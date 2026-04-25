@@ -20,20 +20,19 @@ describe('VehicleList', () => {
     expect(screen.getByText(/Add Vehicle/i)).toBeInTheDocument();
   });
 
-  it('renders data grid when data is present', () => {
+  it('renders table rows when data is present', () => {
     useQueryMock.mockReturnValue({
       data: [
-        { 
-          id: 1, 
-          vin: '1HGCM82633A123456', 
-          make: 'Honda', 
-          model: 'Accord', 
-          color: 'Blue', 
-          year: 2020, 
-          mileage: 15000, 
-          lastServiceDate: '2023-01-15', 
-          nextServiceDate: '2023-07-15', 
-          _links: { self: { href: 'vehicle/1' } }
+        {
+          id: 1,
+          vin: '1HGCM82633A123456',
+          make: 'Honda',
+          model: 'Accord',
+          color: 'Blue',
+          year: 2020,
+          mileage: 15000,
+          lastServiceDate: '2023-01-15',
+          nextServiceDate: '2023-07-15',
         },
       ],
       isLoading: false,
