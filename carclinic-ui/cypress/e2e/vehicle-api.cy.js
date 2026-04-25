@@ -38,7 +38,7 @@ describe('Vehicle API Tests', () => {
       mileage: 15000,
       lastServiceDate: '2024-12-01',
       nextServiceDate: '2025-06-01',
-      ownerId: 1,
+      ownerId: 1, // Assumes owner with id=1 exists in the test database (seeded by migrations)
     };
 
     cy.request({
@@ -83,7 +83,7 @@ describe('Vehicle API Tests', () => {
       mileage: 25000,
       lastServiceDate: '2024-11-15',
       nextServiceDate: '2025-05-15',
-      ownerId: 1,
+      ownerId: 1, // Assumes owner with id=1 exists in the test database (seeded by migrations)
     };
 
     cy.request({
@@ -135,7 +135,7 @@ describe('Vehicle API Tests', () => {
       mileage: 30000,
       lastServiceDate: '2024-10-20',
       nextServiceDate: '2025-04-20',
-      ownerId: 1,
+      ownerId: 1, // Assumes owner with id=1 exists in the test database (seeded by migrations)
     };
 
     cy.request({
