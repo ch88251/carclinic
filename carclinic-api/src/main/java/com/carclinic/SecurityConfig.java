@@ -8,6 +8,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -40,9 +41,12 @@ public class SecurityConfig {
             SessionCreationPolicy.STATELESS))
 			.authorizeHttpRequests(
 					(authorizeHttpRequests) -> authorizeHttpRequests
-							.requestMatchers("/api-docs/**", "/swagger-ui/**", "/swagger-ui.html", "/v3/api-docs/**").permitAll()
-						.requestMatchers("/api/**").permitAll()
-						.anyRequest().authenticated());
+							.requestMatchers(AntPathRequestMatcher.antMatcher("/api-docs/**"),
+									AntPathRequestMatcher.antMatcher("/swagger-ui/**"),
+									AntPathRequestMatcher.antMatcher("/swagger-ui.html"),
+									AntPathRequestMatcher.antMatcher("/v3/api-docs/**")).permitAll()
+							.requestMatchers(AntPathRequestMatcher.antMatcher("/api/**")).permitAll()
+							.anyRequest().authenticated());
       return http.build();
   }  
 }
