@@ -42,9 +42,9 @@ public class Vehicle {
   @Column(name="next_service_date", nullable = false)
   private String nextServiceDate;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "owner")
-	private Owner owner;
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "owner")
+  private Owner owner;
 
   public Vehicle() {
   }
