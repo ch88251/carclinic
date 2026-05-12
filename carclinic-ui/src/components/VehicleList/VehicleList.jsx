@@ -1,7 +1,8 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 import AddVehicle from '../AddVehicle/AddVehicle';
-import { getVehicles, deleteVehicle, addVehicle } from '../../api/vehicleapi';
+import EditVehicle from '../EditVehicle/EditVehicle';
+import { getVehicles, deleteVehicle, addVehicle, updateVehicle } from '../../api/vehicleapi';
 import './VehicleList.css';
 
 const PAGE_SIZE = 10;
@@ -9,6 +10,7 @@ const PAGE_SIZE = 10;
 function VehicleList() {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [addDialogOpen, setAddDialogOpen] = useState(false);
+  const [editingVehicle, setEditingVehicle] = useState(null);
   const [page, setPage] = useState(0);
 
   const queryClient = useQueryClient();
@@ -40,8 +42,23 @@ function VehicleList() {
     },
   });
 
+  const { mutate: updateMutate } = useMutation({
+    mutationFn: ({ id, fields }) => updateVehicle(id, fields),
+    onSuccess: () => {
+      setEditingVehicle(null);
+      queryClient.invalidateQueries({ queryKey: ['vehicles'] });
+    },
+    onError: (err) => {
+      console.error(err);
+    },
+  });
+
   const handleAddVehicle = (vehicle) => {
     addMutate(vehicle);
+  };
+
+  const handleUpdateVehicle = (id, fields) => {
+    updateMutate({ id, fields });
   };
 
   const rows = data ?? [];
@@ -64,6 +81,14 @@ function VehicleList() {
         <div className="modal-overlay" onClick={() => setAddDialogOpen(false)}>
           <div className="modal" onClick={(e) => e.stopPropagation()}>
             <AddVehicle onAdd={handleAddVehicle} />
+          </div>
+        </div>
+      )}
+
+      {editingVehicle && (
+        <div className="modal-overlay" onClick={() => setEditingVehicle(null)}>
+          <div className="modal" onClick={(e) => e.stopPropagation()}>
+            <EditVehicle vehicle={editingVehicle} onSave={handleUpdateVehicle} />
           </div>
         </div>
       )}
@@ -103,7 +128,7 @@ function VehicleList() {
                     <button
                       className="btn btn--icon btn--edit"
                       aria-label="edit"
-                      onClick={() => console.log(`Edit vehicle with ID: ${row.id}`)}
+                      onClick={() => setEditingVehicle(row)}
                     >
                       ✏️
                     </button>
