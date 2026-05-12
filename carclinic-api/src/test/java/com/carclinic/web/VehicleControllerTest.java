@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -67,6 +68,23 @@ class VehicleControllerTest {
 
         ResponseEntity<VehicleDto> response = vehicleController.addVehicle(request);
         assertEquals(201, response.getStatusCode().value());
+        assertEquals(vehicleDto, response.getBody());
+        verify(vehicleRepository).save(vehicle);
+    }
+
+    @Test
+    void updateVehicle_updatesAndReturnsVehicle() {
+        Long id = 1L;
+        VehicleFieldsDto request = new VehicleFieldsDto("VIN1", "Toyota", "Camry", "Blue", 2020, 5000,
+                "2024-01-01", "2025-01-01", 1L);
+        Vehicle vehicle = new Vehicle();
+        VehicleDto vehicleDto = new VehicleDto();
+        when(vehicleRepository.findById(id)).thenReturn(Optional.of(vehicle));
+        when(vehicleMapper.toVehicle(request)).thenReturn(vehicle);
+        when(vehicleMapper.toVehicleDto(vehicle)).thenReturn(vehicleDto);
+
+        ResponseEntity<VehicleDto> response = vehicleController.updateVehicle(id, request);
+        assertEquals(200, response.getStatusCode().value());
         assertEquals(vehicleDto, response.getBody());
         verify(vehicleRepository).save(vehicle);
     }

@@ -13,11 +13,11 @@ insert into staff (id, first_name, last_name, email, phone_number, role) values
 (nextval('hibernate_sequence'), 'Eve', 'Taylor', 'eve.taylor@example.com', '303-555-0123', 'Technician');
 
 insert into vehicles (id, vin, make, model, year, color, mileage, last_service_date, next_service_date, owner) values
-(nextval('hibernate_sequence'), '1HGCM82633A123456', 'Honda', 'Accord', 2020, 'Blue', 15000, '2023-01-15', '2024-01-15', (select id from owners where email = 'john.doe@example.com')),
-(nextval('hibernate_sequence'), '1HGCM82633A123457', 'Toyota', 'Camry', 2019, 'Red', 20000, '2023-02-15', '2024-02-15', (select id from owners where email = 'jane.smith@example.com')),
-(nextval('hibernate_sequence'), '1HGCM82633A123458', 'Ford', 'Fusion', 2018, 'Black', 25000, '2023-03-15', '2024-03-15', (select id from owners where email = 'emily.johnson@example.com')),
-(nextval('hibernate_sequence'), '1HGCM82633A123459', 'Chevrolet', 'Malibu', 2021, 'White', 10000, '2023-04-15', '2024-04-15', (select id from owners where email = 'michael.williams@example.com')),
-(nextval('hibernate_sequence'), '1HGCM82633A123450', 'Nissan', 'Altima', 2022, 'Silver', 5000, '2023-05-15', '2024-05-15', (select id from owners where email = 'sarah.brown@example.com'));
+(nextval('hibernate_sequence'), '1HGCM82633A123001', 'Honda', 'Accord', 2020, 'Blue', 15000, '2023-01-15', '2024-01-15', (select id from owners where email = 'john.doe@example.com')),
+(nextval('hibernate_sequence'), '2HGCM82633A123002', 'Toyota', 'Camry', 2019, 'Red', 20000, '2023-02-15', '2024-02-15', (select id from owners where email = 'jane.smith@example.com')),
+(nextval('hibernate_sequence'), '3HGCM82633A123003', 'Ford', 'Fusion', 2018, 'Black', 25000, '2023-03-15', '2024-03-15', (select id from owners where email = 'emily.johnson@example.com')),
+(nextval('hibernate_sequence'), '4HGCM82633A123004', 'Chevrolet', 'Malibu', 2021, 'White', 10000, '2023-04-15', '2024-04-15', (select id from owners where email = 'michael.williams@example.com')),
+(nextval('hibernate_sequence'), '5HGCM82633A123005', 'Nissan', 'Altima', 2022, 'Silver', 5000, '2023-05-15', '2024-05-15', (select id from owners where email = 'sarah.brown@example.com'));
 
 insert into service_types (id, name, description, estimated_time_hours) values
 (nextval('hibernate_sequence'), 'Oil Change', 'Standard engine oil and filter replacement', 1),
@@ -28,27 +28,27 @@ insert into service_types (id, name, description, estimated_time_hours) values
 
 insert into service_appointments (id, vehicle_id, customer_id, staff_id, appointment_date, status, notes) values
 (nextval('hibernate_sequence'),
- (select id from vehicles where vin = '1HGCM82633A123456'),
+ (select id from vehicles where vin = '1HGCM82633A123001'),
  (select id from owners where email = 'john.doe@example.com'),
  (select id from staff where email = 'alice.davis@example.com'),
  '2024-02-10', 'COMPLETED', 'Routine oil change and tire rotation'),
 (nextval('hibernate_sequence'),
- (select id from vehicles where vin = '1HGCM82633A123457'),
+ (select id from vehicles where vin = '2HGCM82633A123002'),
  (select id from owners where email = 'jane.smith@example.com'),
  (select id from staff where email = 'bob.wilson@example.com'),
  '2024-03-05', 'COMPLETED', 'Brake inspection - pads replaced'),
 (nextval('hibernate_sequence'),
- (select id from vehicles where vin = '1HGCM82633A123458'),
+ (select id from vehicles where vin = '3HGCM82633A123003'),
  (select id from owners where email = 'emily.johnson@example.com'),
  (select id from staff where email = 'alice.davis@example.com'),
  '2024-04-20', 'SCHEDULED', 'Engine tune-up scheduled'),
 (nextval('hibernate_sequence'),
- (select id from vehicles where vin = '1HGCM82633A123459'),
+ (select id from vehicles where vin = '4HGCM82633A123004'),
  (select id from owners where email = 'michael.williams@example.com'),
  null,
  '2024-05-15', 'PENDING', 'Waiting for staff assignment'),
 (nextval('hibernate_sequence'),
- (select id from vehicles where vin = '1HGCM82633A123450'),
+ (select id from vehicles where vin = '5HGCM82633A123005'),
  (select id from owners where email = 'sarah.brown@example.com'),
  (select id from staff where email = 'carol.miller@example.com'),
  '2024-06-01', 'SCHEDULED', 'Transmission service');
