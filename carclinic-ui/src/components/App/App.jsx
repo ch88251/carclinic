@@ -1,21 +1,21 @@
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import VehicleList from '../VehicleList/VehicleList';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import AppLayout from '../AppLayout/AppLayout';
+import LandingPage from '../../pages/LandingPage/LandingPage';
+import VehicleListPage from '../../pages/VehicleListPage/VehicleListPage';
 import './App.css';
-
-const queryClient = new QueryClient();
 
 function App() {
   return (
-    <div className="app">
-      <nav className="app-navbar">
-        <h1>Car Clinic</h1>
-      </nav>
-      <main className="app-content">
-        <QueryClientProvider client={queryClient}>
-          <VehicleList />
-        </QueryClientProvider>
-      </main>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route element={<AppLayout />}>
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/vehicles" element={<VehicleListPage />} />
+          {/* Redirect unimplemented routes back to home until pages are built */}
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
   );
 }
 
