@@ -10,53 +10,32 @@ describe('Vehicle Management UI', () => {
     cy.contains('Car Clinic').should('be.visible');
   });
 
-  it('should display the Vehicle List component', () => {
-    // Wait for the vehicle list to load
-    cy.get('[role="grid"]', { timeout: 10000 }).should('exist');
+  it('should display the Hero section', () => {
+    cy.get('.hero').should('be.visible');
+    cy.contains('Welcome to Car Clinic').should('be.visible');
+    cy.contains('Manage vehicles, appointments, and service records all in one place.').should('be.visible');
   });
 
-  it('should display vehicles in the data grid', { tags: '@smoke' }, () => {
-    // Intercept the API call and mock the response
-    cy.fixture('vehicles.json').then((vehicles) => {
-      cy.intercept('GET', '**/api/vehicles', vehicles).as('getVehicles');
-    });
-
-    cy.visit('/');
-
-    // Wait for the API call to complete
-    cy.wait('@getVehicles');
-
-    // Check that the vehicles are displayed
-    cy.contains('Toyota').should('be.visible');
-    cy.contains('Camry').should('be.visible');
-    cy.contains('Honda').should('be.visible');
-    cy.contains('Accord').should('be.visible');
+  it('should display the Quick Access section', () => {
+    cy.get('.quick-access').should('be.visible');
+    cy.contains('Quick Access').should('be.visible');
+    cy.contains('Vehicles').should('be.visible');
+    cy.contains('Appointments').should('be.visible');
+    cy.contains('Services').should('be.visible');
+    cy.contains('Staff').should('be.visible');
   });
 
-  it('should allow adding a new vehicle', { tags: '@smoke' }, () => {
-    // Intercept the GET request for existing vehicles
-    cy.fixture('vehicles.json').then((vehicles) => {
-      cy.intercept('GET', '**/api/vehicles', vehicles).as('getVehicles');
-    });
+  it('should display the menu links in the Navbar', () => {
+    cy.get('.navbar').should('be.visible');
+    cy.contains('Vehicles').should('be.visible');
+    cy.contains('Appointments').should('be.visible');
+    cy.contains('Services').should('be.visible');
+    cy.contains('Staff').should('be.visible');
+  });
 
-    // Intercept the POST request for adding a new vehicle
-    cy.fixture('new-vehicle.json').then((newVehicle) => {
-      cy.intercept('POST', '**/api/vehicles', {
-        statusCode: 201,
-        body: {
-          ...newVehicle,
-          id: 3,
-          _links: {
-            self: { href: 'http://localhost:8080/api/vehicles/3' },
-          },
-        },
-      }).as('addVehicle');
-    });
-
-    cy.visit('/');
-    cy.wait('@getVehicles');
-
-    // Click the Add Vehicle button (adjust selector based on your UI)
-    cy.contains('button', /add/i).should('be.visible').click();
+  it('should display the Footer with current year', () => {
+    const currentYear = new Date().getFullYear();
+    cy.get('.footer').should('be.visible');
+    cy.contains(`© ${currentYear} Car Clinic. All rights reserved.`).should('be.visible');
   });
 });

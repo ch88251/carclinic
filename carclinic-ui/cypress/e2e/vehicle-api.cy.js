@@ -160,12 +160,11 @@ describe('Vehicle API Tests', () => {
     });
   });
 
-  it('should handle API errors gracefully', { tags: '@api' }, () => {
-    // Try to get a non-existent vehicle
+  it('should handle 404 when getting non-existent vehicle', { tags: '@api' }, () => {
     cy.request({
       method: 'GET',
-      url: `${apiUrl}/api/vehicles/99999`,
-      failOnStatusCode: false, // Don't fail the test on 4xx/5xx
+      url: `${apiUrl}/api/vehicles/999999`, // Assuming this ID does not exist
+      failOnStatusCode: false,
     }).then((response) => {
       expect(response.status).to.eq(404);
     });

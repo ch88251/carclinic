@@ -42,6 +42,13 @@ public class VehicleController {
 				.toList();
 	}
 
+	@GetMapping(value = "/{id}", produces = "application/json")
+	public ResponseEntity<VehicleDto> getVehicleById(@PathVariable Long id) {
+		Vehicle vehicle = repository.findById(id)
+				.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Vehicle not found: " + id));
+		return ResponseEntity.ok(vehicleMapper.toVehicleDto(vehicle));
+	}
+
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> deleteVehicle(@PathVariable Long id) {
 		repository.deleteById(id);

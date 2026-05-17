@@ -13,6 +13,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.web.server.ResponseStatusException;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -47,6 +49,31 @@ class VehicleControllerTest {
         assertNotNull(result);
         assertIterableEquals(List.of(dto1, dto2), result);
         verify(vehicleRepository).findAll();
+    }
+
+    @Test
+    void getVehicleById_returnsVehicle() {
+        Long id = 1L;
+        Vehicle vehicle = new Vehicle();
+        VehicleDto vehicleDto = new VehicleDto();
+        when(vehicleRepository.findById(id)).thenReturn(Optional.of(vehicle));
+        when(vehicleMapper.toVehicleDto(vehicle)).thenReturn(vehicleDto);
+
+        ResponseEntity<VehicleDto> response = vehicleController.getVehicleById(id);
+        assertEquals(200, response.getStatusCode().value());
+        assertEquals(vehicleDto, response.getBody());
+    }
+
+    @Test
+    void getVehicleById_returnsNotFound_whenVehicleDoesNotExist() {
+        Long id = 99L;
+        when(vehicleRepository.findById(id)).thenReturn(Optional.empty());
+
+        ResponseStatusException ex = assertThrows(
+                ResponseStatusException.class,
+                () -> vehicleController.getVehicleById(id)
+        );
+        assertEquals(404, ex.getStatusCode().value());
     }
 
     @Test
