@@ -81,4 +81,34 @@ public class ServiceAppointmentDto {
     public void setNotes(String notes) {
         this.notes = notes;
     }
+
+    // Display-only fields for list views
+
+    private String customerName;
+    private String vehicleDescription;
+    private String staffName;
+
+    public String getCustomerName() {
+        return customerName;
+    }
+
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
+    }
+
+    public String getVehicleDescription() {
+        return vehicleDescription;
+    }
+
+    public void setVehicleDescription(String vehicleDescription) {
+        this.vehicleDescription = vehicleDescription;
+    }
+
+    public String getStaffName() {
+        return staffName;
+    }
+
+    public void setStaffName(String staffName) {
+        this.staffName = staffName;
+    }
 }

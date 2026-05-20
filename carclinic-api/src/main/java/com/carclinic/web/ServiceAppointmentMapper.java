@@ -42,7 +42,22 @@ public class ServiceAppointmentMapper {
         Long vehicleId = appointment.getVehicle() != null ? appointment.getVehicle().getId() : null;
         Long customerId = appointment.getCustomer() != null ? appointment.getCustomer().getId() : null;
         Long staffId = appointment.getStaff() != null ? appointment.getStaff().getId() : null;
-        return new ServiceAppointmentDto(appointment.getId(), vehicleId, customerId, staffId,
+        ServiceAppointmentDto dto = new ServiceAppointmentDto(appointment.getId(), vehicleId, customerId, staffId,
                 appointment.getAppointmentDate(), appointment.getStatus(), appointment.getNotes());
+
+        if (appointment.getCustomer() != null) {
+            dto.setCustomerName(
+                    appointment.getCustomer().getFirstName() + " " + appointment.getCustomer().getLastName());
+        }
+        if (appointment.getVehicle() != null) {
+            var v = appointment.getVehicle();
+            dto.setVehicleDescription(v.getYear() + " " + v.getMake() + " " + v.getModel());
+        }
+        if (appointment.getStaff() != null) {
+            dto.setStaffName(
+                    appointment.getStaff().getFirstName() + " " + appointment.getStaff().getLastName());
+        }
+
+        return dto;
     }
 }

@@ -6,7 +6,7 @@ import './Navbar.css';
 const NAV_LINKS = [
   { label: 'Home',         to: '/'         },
   { label: 'Vehicles',     to: '/vehicles' },
-  { label: 'Appointments', href: '#'       },
+  { label: 'Appointments', to: '/appointments' },
   { label: 'Services',     href: '#'       },
   { label: 'Staff',        href: '#'       },
 ];
