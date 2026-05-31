@@ -8,7 +8,7 @@ const NAV_LINKS = [
   { label: 'Vehicles',     to: '/vehicles' },
   { label: 'Appointments', to: '/appointments' },
   { label: 'Services',     href: '#'       },
-  { label: 'Staff',        href: '#'       },
+  { label: 'Staff',        to: '/staff'    },
 ];
 
 function Navbar({ user, onLogin, onLogout }) {

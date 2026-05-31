@@ -18,7 +18,7 @@ services:
 
   backend:
     build:
-      context: ./carclinic-api
+      context: ./backend
     container_name: carclinic-api
     restart: always
     ports:
@@ -32,7 +32,7 @@ services:
         condition: service_healthy
   frontend:
     build:
-      context: ./carclinic-ui
+      context: ./frontend
     container_name: carclinic-ui
     restart: always
     ports:
