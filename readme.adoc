@@ -60,9 +60,11 @@ and imports the `carclinic` realm automatically.
 - Realm: `carclinic`
 - Client: `carclinic-ui`
 - Roles: `admin`, `staff`
-- Demo users:
+- Demo users (local development only):
   * `admin.user` / `changeit`
   * `staff.user` / `changeit`
+
+Do not use these demo credentials outside local development.
 
 Start the full stack with:
 

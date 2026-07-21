@@ -54,15 +54,20 @@ public class SecurityConfig {
       HttpSecurity http,
       Converter<Jwt, ? extends AbstractAuthenticationToken> jwtAuthenticationConverter) throws Exception {
     http
-        .csrf((csrf) -> csrf.disable())
+        .csrf((csrf) -> csrf.ignoringRequestMatchers(
+            "/api/**",
+            "/api-docs/**",
+            "/swagger-ui/**",
+            "/swagger-ui.html",
+            "/v3/api-docs/**",
+            "/error"))
         .cors(withDefaults())
         .sessionManagement((sessionManagement) -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .authorizeHttpRequests((authorize) -> authorize
             .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
             .requestMatchers("/api-docs/**", "/swagger-ui/**", "/swagger-ui.html", "/v3/api-docs/**", "/error").permitAll()
-            .requestMatchers(HttpMethod.POST, "/api/staff/**").hasRole("admin")
-            .requestMatchers(HttpMethod.PUT, "/api/staff/**").hasRole("admin")
-            .requestMatchers(HttpMethod.DELETE, "/api/staff/**").hasRole("admin")
+            .requestMatchers(HttpMethod.GET, "/api/staff/**").hasAnyRole("admin", "staff")
+            .requestMatchers("/api/staff/**").hasRole("admin")
             .requestMatchers(HttpMethod.GET, "/api/**").hasAnyRole("admin", "staff")
             .requestMatchers("/api/**").hasAnyRole("admin", "staff")
             .anyRequest().authenticated())
