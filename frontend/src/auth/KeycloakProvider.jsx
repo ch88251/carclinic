@@ -9,10 +9,10 @@ const buildUser = (tokenParsed) => {
   }
 
   const displayName = tokenParsed.name
-    ?? [tokenParsed.given_name, tokenParsed.family_name].filter(Boolean).join(' ')
-    ?? tokenParsed.preferred_username
-    ?? tokenParsed.email
-    ?? null;
+    || [tokenParsed.given_name, tokenParsed.family_name].filter(Boolean).join(' ').trim()
+    || tokenParsed.preferred_username
+    || tokenParsed.email
+    || null;
 
   if (!displayName) {
     return null;

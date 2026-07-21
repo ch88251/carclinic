@@ -71,7 +71,7 @@ public class SecurityConfig {
     return http.build();
   }
 
-  private Collection<? extends GrantedAuthority> extractRealmRoles(Jwt jwt) {
+  private Collection<GrantedAuthority> extractRealmRoles(Jwt jwt) {
     Collection<GrantedAuthority> authorities = new ArrayList<>();
     Map<String, Object> realmAccess = jwt.getClaim("realm_access");
     if (realmAccess == null) {
