@@ -1,9 +1,9 @@
 = Car Clinic Application
 
-The Car Clinic application is a software application used by Car Clinic staff and 
-customers to schedule maintenance services for vehicles. The Car Clinic staff use 
-the application to manage appointments and services, order parts from suppliers and 
-update the status of vehicles, while customers use the application to schedule appointments, 
+The Car Clinic application is a software application used by Car Clinic staff and
+customers to schedule maintenance services for vehicles. The Car Clinic staff use
+the application to manage appointments and services, order parts from suppliers and
+update the status of vehicles, while customers use the application to schedule appointments,
 view service history, and receive notifications about their vehicles.
 
 == System Design
@@ -26,8 +26,8 @@ image::design/er-diagram.png[]
 
 == Backend Development
 
-The backend of the Car Clinic application provides a RESTful API for managing customers, 
-vehicles, staff, service appointments, service types, service details, and notifications. 
+The backend of the Car Clinic application provides a RESTful API for managing customers,
+vehicles, staff, service appointments, service types, service details, and notifications.
 The backend interacts with a PostgreSQL database to store and retrieve data.
 
 === Technologies Used
@@ -35,12 +35,13 @@ The backend interacts with a PostgreSQL database to store and retrieve data.
 - Spring Boot
 - JPA (Java Persistence API)
 - PostgreSQL
+- Keycloak
 
 == Frontend Development
 
-The frontend of the Car Clinic application is built using modern web technologies to 
-provide a responsive and user-friendly interface for customers and staff. The frontend 
-communicates with the backend API to perform CRUD operations on the various entities in 
+The frontend of the Car Clinic application is built using modern web technologies to
+provide a responsive and user-friendly interface for customers and staff. The frontend
+communicates with the backend API to perform CRUD operations on the various entities in
 the application.
 
 === Technologies Used
@@ -48,4 +49,24 @@ the application.
 - Tanstack Query
 - Axios
 - MaterialUI
+- Keycloak JS
 
+== Authentication
+
+The local Docker environment now starts a Keycloak instance on `http://localhost:8180`
+and imports the `carclinic` realm automatically.
+
+=== Imported realm settings
+- Realm: `carclinic`
+- Client: `carclinic-ui`
+- Roles: `admin`, `staff`
+- Demo users:
+  * `admin.user` / `changeit`
+  * `staff.user` / `changeit`
+
+Start the full stack with:
+
+[source,bash]
+----
+docker compose up --build
+----

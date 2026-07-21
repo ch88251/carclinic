@@ -1,15 +1,15 @@
 import { Outlet } from 'react-router-dom';
 import Navbar from '../Navbar/Navbar';
 import Footer from '../Footer/Footer';
+import { useAuth } from '../../auth/useAuth';
 import './AppLayout.css';
 
-// Placeholder – replace with auth context when Keycloak is integrated
-const MOCK_USER = { name: 'Jane Doe', initials: 'JD' };
-
 function AppLayout() {
+  const { user, login, logout } = useAuth();
+
   return (
     <div className="app-layout">
-      <Navbar user={MOCK_USER} onLogin={() => {}} onLogout={() => {}} />
+      <Navbar user={user} onLogin={login} onLogout={logout} />
       <main className="app-layout-content">
         <Outlet />
       </main>

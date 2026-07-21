@@ -1,19 +1,17 @@
-import axios from 'axios';
-
-const BASE = import.meta.env.VITE_API_URL;
+import apiClient from './httpClient';
 
 export const getStaff = async () => {
-  const response = await axios.get(`${BASE}/api/staff`);
+  const response = await apiClient.get('/api/staff');
   return response.data;
 };
 
 export const addStaff = async (staff) => {
-  const response = await axios.post(`${BASE}/api/staff`, staff, {
+  const response = await apiClient.post('/api/staff', staff, {
     headers: { 'Content-Type': 'application/json' },
   });
   return response.data;
 };
 
 export const deleteStaff = async (id) => {
-  await axios.delete(`${BASE}/api/staff/${id}`);
+  await apiClient.delete(`/api/staff/${id}`);
 };

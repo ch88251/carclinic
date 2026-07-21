@@ -16,6 +16,29 @@ services:
       timeout: 5s
       retries: 5
 
+  keycloak:
+    build:
+      context: ./keycloak
+    container_name: carclinic-keycloak
+    restart: always
+    command: ["start-dev", "--import-realm", "--http-port=8180"]
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://db:5432/carclinic
+      KC_DB_USERNAME: carclinic
+      KC_DB_PASSWORD: carclinic
+      KC_HTTP_ENABLED: true
+      KC_HOSTNAME_STRICT: false
+    ports:
+      - "8180:8180"
+    volumes:
+      - ./keycloak/realm-export.json:/opt/keycloak/data/import/realm-export.json:ro
+    depends_on:
+      db:
+        condition: service_healthy
+
   backend:
     build:
       context: ./backend
@@ -27,18 +50,29 @@ services:
       SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/carclinic
       SPRING_DATASOURCE_USERNAME: carclinic
       SPRING_DATASOURCE_PASSWORD: carclinic
+      SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI: http://keycloak:8180/realms/carclinic
     depends_on:
       db:
         condition: service_healthy
+      keycloak:
+        condition: service_started
+
   frontend:
     build:
       context: ./frontend
+      args:
+        VITE_API_URL: http://localhost:8080
+        VITE_KEYCLOAK_URL: http://localhost:8180
+        VITE_KEYCLOAK_REALM: carclinic
+        VITE_KEYCLOAK_CLIENT_ID: carclinic-ui
     container_name: carclinic-ui
     restart: always
     ports:
       - "3000:80"
     depends_on:
       - backend
+      - keycloak
+
 volumes:
   carclinic-data:
     driver: local
