@@ -66,6 +66,8 @@ and imports the `carclinic` realm automatically.
 
 Do not use these demo credentials outside local development.
 
+The backend API uses stateless bearer-token authentication from Keycloak, so CSRF checks are only bypassed for the token-protected API and documentation endpoints.
+
 Start the full stack with:
 
 [source,bash]
