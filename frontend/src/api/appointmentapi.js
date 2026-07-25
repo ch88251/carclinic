@@ -1,27 +1,27 @@
-import axios from 'axios';
+import apiClient from './httpClient';
 
 export const getAppointments = async () => {
-  const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/appointments`);
+  const response = await apiClient.get('/api/appointments');
   return response.data;
 };
 
 export const addAppointment = async (appointment) => {
-  const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/appointments`, appointment, {
+  const response = await apiClient.post('/api/appointments', appointment, {
     headers: { 'Content-Type': 'application/json' },
   });
   return response.data;
 };
 
 export const deleteAppointment = async (id) => {
-  await axios.delete(`${import.meta.env.VITE_API_URL}/api/appointments/${id}`);
+  await apiClient.delete(`/api/appointments/${id}`);
 };
 
 export const getOwners = async () => {
-  const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/owners`);
+  const response = await apiClient.get('/api/owners');
   return response.data;
 };
 
 export const getStaff = async () => {
-  const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/staff`);
+  const response = await apiClient.get('/api/staff');
   return response.data;
 };

@@ -1,5 +1,6 @@
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import AppLayout from '../AppLayout/AppLayout';
+import PrivateRoute from '../../auth/PrivateRoute';
 import LandingPage from '../../pages/LandingPage/LandingPage';
 import VehicleListPage from '../../pages/VehicleListPage/VehicleListPage';
 import AppointmentListPage from '../../pages/AppointmentListPage/AppointmentListPage';
@@ -13,11 +14,10 @@ function App() {
       <Routes>
         <Route element={<AppLayout />}>
           <Route path="/" element={<LandingPage />} />
-          <Route path="/vehicles" element={<VehicleListPage />} />
-          <Route path="/appointments" element={<AppointmentListPage />} />
-          <Route path="/appointments/new" element={<ScheduleAppointmentPage />} />
-          <Route path="/staff" element={<StaffListPage />} />
-          {/* Redirect unimplemented routes back to home until pages are built */}
+          <Route path="/vehicles" element={<PrivateRoute><VehicleListPage /></PrivateRoute>} />
+          <Route path="/appointments" element={<PrivateRoute><AppointmentListPage /></PrivateRoute>} />
+          <Route path="/appointments/new" element={<PrivateRoute><ScheduleAppointmentPage /></PrivateRoute>} />
+          <Route path="/staff" element={<PrivateRoute><StaffListPage /></PrivateRoute>} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Route>
       </Routes>
