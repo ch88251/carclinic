@@ -50,7 +50,10 @@ services:
       SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/carclinic
       SPRING_DATASOURCE_USERNAME: carclinic
       SPRING_DATASOURCE_PASSWORD: carclinic
-      SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI: http://keycloak:8180/realms/carclinic
+      # Must match the "iss" claim in tokens as the browser sees Keycloak, not the
+      # Docker-internal hostname the backend itself uses to reach it.
+      APP_KEYCLOAK_ISSUER_URI: http://localhost:8180/realms/carclinic
+      APP_KEYCLOAK_JWK_SET_URI: http://keycloak:8180/realms/carclinic/protocol/openid-connect/certs
     depends_on:
       db:
         condition: service_healthy
