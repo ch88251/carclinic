@@ -1,5 +1,7 @@
 package com.carclinic.domain;
 
+import java.math.BigDecimal;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
@@ -17,13 +19,17 @@ public class ServiceType extends AbstractEntity {
     @Column(name = "estimated_time_hours", nullable = false)
     private int estimatedTimeHours;
 
+    @Column(name = "price", nullable = false, precision = 10, scale = 2)
+    private BigDecimal price;
+
     public ServiceType() {
     }
 
-    public ServiceType(String name, String description, int estimatedTimeHours) {
+    public ServiceType(String name, String description, int estimatedTimeHours, BigDecimal price) {
         this.name = name;
         this.description = description;
         this.estimatedTimeHours = estimatedTimeHours;
+        this.price = price;
     }
 
     public String getName() {
@@ -48,5 +54,13 @@ public class ServiceType extends AbstractEntity {
 
     public void setEstimatedTimeHours(int estimatedTimeHours) {
         this.estimatedTimeHours = estimatedTimeHours;
+    }
+
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
     }
 }

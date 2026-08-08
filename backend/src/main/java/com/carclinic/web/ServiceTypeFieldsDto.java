@@ -1,7 +1,11 @@
 package com.carclinic.web;
 
+import java.math.BigDecimal;
+
+import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 public class ServiceTypeFieldsDto {
 
@@ -13,13 +17,18 @@ public class ServiceTypeFieldsDto {
     @Min(1)
     private int estimatedTimeHours;
 
+    @NotNull
+    @DecimalMin(value = "0.0", inclusive = true)
+    private BigDecimal price;
+
     public ServiceTypeFieldsDto() {
     }
 
-    public ServiceTypeFieldsDto(String name, String description, int estimatedTimeHours) {
+    public ServiceTypeFieldsDto(String name, String description, int estimatedTimeHours, BigDecimal price) {
         this.name = name;
         this.description = description;
         this.estimatedTimeHours = estimatedTimeHours;
+        this.price = price;
     }
 
     public String getName() {
@@ -44,5 +53,13 @@ public class ServiceTypeFieldsDto {
 
     public void setEstimatedTimeHours(int estimatedTimeHours) {
         this.estimatedTimeHours = estimatedTimeHours;
+    }
+
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
     }
 }

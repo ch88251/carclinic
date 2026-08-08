@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -59,7 +60,8 @@ public class ServiceTypeControllerTest {
 
     @Test
     void addServiceType_savesAndReturnsServiceType() {
-        ServiceTypeFieldsDto request = new ServiceTypeFieldsDto("Oil Change", "Standard oil change", 1);
+        ServiceTypeFieldsDto request = new ServiceTypeFieldsDto("Oil Change", "Standard oil change", 1,
+                new BigDecimal("49.99"));
         ServiceType serviceType = new ServiceType();
         ServiceTypeDto serviceTypeDto = new ServiceTypeDto();
         when(serviceTypeMapper.toServiceType(request)).thenReturn(serviceType);

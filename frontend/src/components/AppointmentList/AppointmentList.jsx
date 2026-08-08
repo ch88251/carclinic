@@ -1,7 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getAppointments, deleteAppointment } from '../../api/appointmentapi';
+import { getAppointments, deleteAppointment, getAppointmentServices } from '../../api/appointmentapi';
 import './AppointmentList.css';
 
 const STATUS_LABELS = {
@@ -17,12 +17,23 @@ function AppointmentList() {
   const [statusFilter, setStatusFilter] = useState('');
   const [page, setPage] = useState(0);
   const [toast, setToast] = useState(null);
+  const [viewingAppointment, setViewingAppointment] = useState(null);
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
   const { data, isLoading, isError, isSuccess } = useQuery({
     queryKey: ['appointments'],
     queryFn: getAppointments,
+  });
+
+  const {
+    data: services = [],
+    isLoading: isLoadingServices,
+    isError: isServicesError,
+  } = useQuery({
+    queryKey: ['appointment-services', viewingAppointment?.id],
+    queryFn: () => getAppointmentServices(viewingAppointment.id),
+    enabled: !!viewingAppointment,
   });
 
   const { mutate: cancelMutate } = useMutation({
@@ -98,6 +109,12 @@ function AppointmentList() {
                     </td>
                     <td className="col-actions">
                       <button
+                        className="btn btn--view"
+                        onClick={() => setViewingAppointment(row)}
+                      >
+                        View Services
+                      </button>
+                      <button
                         className="btn btn--cancel"
                         disabled={row.status !== 'SCHEDULED'}
                         onClick={() => {
@@ -134,6 +151,57 @@ function AppointmentList() {
       )}
 
       {toast && <div className="toast">{toast}</div>}
+
+      {viewingAppointment && (
+        <div className="modal-overlay" onClick={() => setViewingAppointment(null)}>
+          <div className="modal" onClick={(e) => e.stopPropagation()}>
+            <div className="service-view">
+              <h2 className="service-view__title">
+                Services for {viewingAppointment.vehicleDescription}
+              </h2>
+              <p className="service-view__meta">
+                {viewingAppointment.customerName} &middot; {viewingAppointment.appointmentDate} &middot;{' '}
+                <span className={`status-badge status-badge--${(viewingAppointment.status ?? '').toLowerCase().replace('_', '-')}`}>
+                  {STATUS_LABELS[viewingAppointment.status] ?? viewingAppointment.status}
+                </span>
+              </p>
+
+              {isLoadingServices && (
+                <p className="service-view__status">Loading services…</p>
+              )}
+              {isServicesError && (
+                <p className="service-view__status service-view__status--error">
+                  Failed to load services.
+                </p>
+              )}
+
+              {!isLoadingServices && !isServicesError && (
+                <ul className="service-view__list">
+                  {services.map((s) => (
+                    <li key={s.id} className="service-view__item">
+                      <span className="service-view__name">{s.serviceTypeName}</span>
+                      {s.estimatedTimeHours ? (
+                        <span className="service-view__hours">
+                          ~{s.estimatedTimeHours} hr{s.estimatedTimeHours === 1 ? '' : 's'}
+                        </span>
+                      ) : null}
+                    </li>
+                  ))}
+                  {services.length === 0 && (
+                    <li className="service-view__status">No services recorded for this appointment.</li>
+                  )}
+                </ul>
+              )}
+
+              <div className="service-view__actions">
+                <button className="btn btn--outline" onClick={() => setViewingAppointment(null)}>
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

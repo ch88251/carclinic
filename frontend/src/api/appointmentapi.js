@@ -16,6 +16,11 @@ export const deleteAppointment = async (id) => {
   await apiClient.delete(`/api/appointments/${id}`);
 };
 
+export const getAppointmentServices = async (id) => {
+  const response = await apiClient.get(`/api/appointments/${id}/services`);
+  return response.data;
+};
+
 export const getOwners = async () => {
   const response = await apiClient.get('/api/owners');
   return response.data;

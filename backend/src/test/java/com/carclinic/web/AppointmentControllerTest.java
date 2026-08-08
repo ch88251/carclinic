@@ -3,9 +3,11 @@ package com.carclinic.web;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertIterableEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -15,9 +17,13 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.carclinic.domain.ServiceAppointment;
 import com.carclinic.domain.ServiceAppointmentRepository;
+import com.carclinic.domain.ServiceDetails;
+import com.carclinic.domain.ServiceDetailsRepository;
+import com.carclinic.domain.ServiceType;
 
 public class AppointmentControllerTest {
 
@@ -26,6 +32,12 @@ public class AppointmentControllerTest {
 
     @Mock
     private ServiceAppointmentMapper serviceAppointmentMapper;
+
+    @Mock
+    private ServiceDetailsRepository serviceDetailsRepository;
+
+    @Mock
+    private ServiceDetailsMapper serviceDetailsMapper;
 
     @InjectMocks
     private AppointmentController appointmentController;
@@ -93,5 +105,34 @@ public class AppointmentControllerTest {
         assertEquals(201, response.getStatusCode().value());
         assertEquals(responseDto, response.getBody());
         verify(repository).save(appointment);
+    }
+
+    @Test
+    void getAppointmentServices_returnsServicesForAppointment() {
+        Long appointmentId = 1L;
+        ServiceType oilChange = new ServiceType("Oil Change", "desc", 1, new BigDecimal("49.99"));
+        ServiceDetails details = new ServiceDetails(null, oilChange, new BigDecimal("49.99"));
+        ServiceDetailsDto dto = new ServiceDetailsDto(1L, appointmentId, null, "Oil Change", 1,
+                new BigDecimal("49.99"));
+
+        when(repository.existsById(appointmentId)).thenReturn(true);
+        when(serviceDetailsRepository.findByAppointmentId(appointmentId)).thenReturn(List.of(details));
+        when(serviceDetailsMapper.toServiceDetailsDto(details)).thenReturn(dto);
+
+        List<ServiceDetailsDto> result = appointmentController.getAppointmentServices(appointmentId);
+
+        assertNotNull(result);
+        assertIterableEquals(List.of(dto), result);
+    }
+
+    @Test
+    void getAppointmentServices_appointmentNotFound_throwsNotFound() {
+        Long appointmentId = 99L;
+        when(repository.existsById(appointmentId)).thenReturn(false);
+
+        ResponseStatusException ex = assertThrows(ResponseStatusException.class,
+                () -> appointmentController.getAppointmentServices(appointmentId));
+
+        assertEquals(404, ex.getStatusCode().value());
     }
 }

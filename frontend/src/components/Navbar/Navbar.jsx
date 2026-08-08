@@ -7,7 +7,7 @@ const NAV_LINKS = [
   { label: 'Home',         to: '/'         },
   { label: 'Vehicles',     to: '/vehicles' },
   { label: 'Appointments', to: '/appointments' },
-  { label: 'Services',     href: '#'       },
+  { label: 'Services',     to: '/services' },
   { label: 'Staff',        to: '/staff'    },
 ];
 

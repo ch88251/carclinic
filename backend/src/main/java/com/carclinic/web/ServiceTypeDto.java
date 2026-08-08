@@ -1,20 +1,24 @@
 package com.carclinic.web;
 
+import java.math.BigDecimal;
+
 public class ServiceTypeDto {
 
     private Long id;
     private String name;
     private String description;
     private int estimatedTimeHours;
+    private BigDecimal price;
 
     public ServiceTypeDto() {
     }
 
-    public ServiceTypeDto(Long id, String name, String description, int estimatedTimeHours) {
+    public ServiceTypeDto(Long id, String name, String description, int estimatedTimeHours, BigDecimal price) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.estimatedTimeHours = estimatedTimeHours;
+        this.price = price;
     }
 
     public Long getId() {
@@ -47,5 +51,13 @@ public class ServiceTypeDto {
 
     public void setEstimatedTimeHours(int estimatedTimeHours) {
         this.estimatedTimeHours = estimatedTimeHours;
+    }
+
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
     }
 }

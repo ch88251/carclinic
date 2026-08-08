@@ -6,6 +6,7 @@ import VehicleListPage from '../../pages/VehicleListPage/VehicleListPage';
 import AppointmentListPage from '../../pages/AppointmentListPage/AppointmentListPage';
 import ScheduleAppointmentPage from '../../pages/ScheduleAppointmentPage/ScheduleAppointmentPage';
 import StaffListPage from '../../pages/StaffListPage/StaffListPage';
+import ServicesPage from '../../pages/ServicesPage/ServicesPage';
 import './App.css';
 
 function App() {
@@ -18,6 +19,7 @@ function App() {
           <Route path="/appointments" element={<PrivateRoute><AppointmentListPage /></PrivateRoute>} />
           <Route path="/appointments/new" element={<PrivateRoute><ScheduleAppointmentPage /></PrivateRoute>} />
           <Route path="/staff" element={<PrivateRoute><StaffListPage /></PrivateRoute>} />
+          <Route path="/services" element={<PrivateRoute><ServicesPage /></PrivateRoute>} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Route>
       </Routes>
