@@ -1,14 +1,22 @@
 # Dockerfile for carclinic-api (Spring Boot)
-FROM eclipse-temurin:21-jre-alpine
 
-# Set the working directory
+# --- Build stage ---
+FROM eclipse-temurin:21-jdk-alpine AS build
 WORKDIR /app
 
-# Copy the built jar from the build context
-COPY build/libs/carclinic-0.0.1-SNAPSHOT.jar app.jar
+COPY gradlew settings.gradle build.gradle ./
+COPY gradle ./gradle
+RUN ./gradlew --version
 
-# Expose the default Spring Boot port
+COPY src ./src
+RUN ./gradlew bootJar --no-daemon
+
+# --- Runtime stage ---
+FROM eclipse-temurin:21-jre-alpine
+WORKDIR /app
+
+COPY --from=build /app/build/libs/carclinic-0.0.1-SNAPSHOT.jar app.jar
+
 EXPOSE 8080
 
-# Run the application
 ENTRYPOINT ["java", "-jar", "app.jar"]
